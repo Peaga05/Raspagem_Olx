@@ -40,33 +40,17 @@ def _scrapper(links, headers):
                 if(span[0].get_text()=='Cor'):
                     x = item.find_all('span', class_=['sc-bZQynM bBPxWM'])
                     carro.append(x[0].get_text())
-
             valor = soup.find_all('h2', class_=['ad__sc-12l420o-1 dnbBJL sc-bZQynM jyLhNn'])    
-            cidade = soup.find_all('span', class_= ['ad__sc-1f2ug0x-1 cpGpXB sc-bZQynM KhQwW'])
-            print(cidade[1].get_text())    
+            cidade = soup.find_all('span', class_= ['ad__sc-1f2ug0x-1 cpGpXB sc-bZQynM KhQwW'])   
             if valor != '':
-                #print(valor[1].get_text())
                 carro.append(valor[1].get_text())
+            else:
+                carro.append("0")
             carro.append(cidade[1].get_text())
             carros.append(carro)
-    print(carros)
-            # a = soup.find_all('a', class_=['sc-EHOje bKbCBo'])
-            # span = soup.find_all('span', class_=['sc-bZQynM bBPxWM'])
-            # print(a[0].get_text())
-            # print(a[3].get_text())
-            # print(a[4].get_text())
-            # print(span[0].get_text())
-            # print(span[1].get_text())
-            # print(span[4].get_text())
-            # print(span[5].get_text())
-            # print("-----------------------")
-            # for b in a:
-            #     carro.append(b.get_text())
-            # for b in span:
-            #     carro.append(b.get_text())
-            # print(carro)   
+    return carros
 
-def _post():
+def _post(carros):
     print("Olá")
 
 headers = {
@@ -74,4 +58,5 @@ headers = {
 }
 url = "https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios/estado-es?rs=55&re=69"
 links = _scrapper_first_page(url, headers)
-_scrapper(links, headers)
+carros = _scrapper(links, headers)
+_post(carros)
