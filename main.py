@@ -40,6 +40,14 @@ def _scrapper(links, headers):
                 if(span[0].get_text()=='Cor'):
                     x = item.find_all('span', class_=['sc-bZQynM bBPxWM'])
                     carro.append(x[0].get_text())
+
+            valor = soup.find_all('h2', class_=['ad__sc-12l420o-1 dnbBJL sc-bZQynM jyLhNn'])    
+            cidade = soup.find_all('span', class_= ['ad__sc-1f2ug0x-1 cpGpXB sc-bZQynM KhQwW'])
+            print(cidade[1].get_text())    
+            if valor != '':
+                #print(valor[1].get_text())
+                carro.append(valor[1].get_text())
+            carro.append(cidade[1].get_text())
             carros.append(carro)
     print(carros)
             # a = soup.find_all('a', class_=['sc-EHOje bKbCBo'])
