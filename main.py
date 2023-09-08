@@ -55,7 +55,6 @@ def _scrapper(links, headers):
                 carro.append("0")
             carro.append(cidade[1].get_text())
             carros.append(carro)
-    print(carros)
     return carros
 
 def _post(carros):
