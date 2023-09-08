@@ -7,6 +7,7 @@ import requests
 from bs4 import BeautifulSoup
 
 #Quando a cor do carro for azul foi definido o valor padrão de "Outro"
+#Dupla: Guilherme Oliveira - Paulo Henrique Serafim
 def _scrapper_first_page(url, headers):
     links = []
     data = requests.get(url, headers=headers)

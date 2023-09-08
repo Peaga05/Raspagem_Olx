@@ -981,3 +981,18 @@ b@https://www.gstatic.com/_/mss/boq-search/_/js/k=boq-search.VisualFrontendUi.pt
 
 1694178554861	Marionette	INFO	Stopped listening on port 58378
 Dynamically enable window occlusion 1
+1694178622396	geckodriver	INFO	Listening on 127.0.0.1:58472
+1694178625474	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "58473" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\phls3\\AppData\\Local\\Temp\\rust_mozprofileM4WhjY"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1694178625778	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1694178625873	Marionette	INFO	Listening on port 58480
+WebDriver BiDi listening on ws://127.0.0.1:58473
+Read port: 58480
+1694178626121	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+DevTools listening on ws://127.0.0.1:58473/devtools/browser/2ca0903e-f5da-4078-9720-c2f52f8193a9
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://weka.inf.ufes.br."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://weka.inf.ufes.br."
+1694178736229	Marionette	INFO	Stopped listening on port 58480
+Dynamically enable window occlusion 1
