@@ -6,7 +6,7 @@ from selenium.webdriver.support.ui import Select
 import requests
 from bs4 import BeautifulSoup
 
-
+#Quando a cor do carro for azul foi definido o valor padrão de "Outro"
 def _scrapper_first_page(url, headers):
     links = []
     data = requests.get(url, headers=headers)
@@ -45,10 +45,12 @@ def _scrapper(links, headers):
                     if(span.get_text()=='Cor'):
                         x = item.find_all('span', class_=['sc-jTzLTM cseqXy'])
                         carro.append(x[5].get_text())
-            valor = soup.find_all('h2', class_=['ad__sc-12l420o-1 dnbBJL sc-jTzLTM iyLIyP'])    
+            valor = soup.find_all('h2', class_=['ad__sc-12l420o-1 dnbBJL sc-jTzLTM iyLIyP'])   
+            valor = valor[1].get_text() 
+            valor = valor.replace(".", "")
             cidade = soup.find_all('span', class_= ['ad__sc-1f2ug0x-1 cpGpXB sc-jTzLTM ieZUgc'])   
             if valor != '':
-                carro.append(valor[1].get_text())
+                carro.append(valor)
             else:
                 carro.append("0")
             carro.append(cidade[1].get_text())
@@ -91,14 +93,14 @@ def _post(carros):
         btnCadastrar = driver.find_element(By.NAME, "insert")
 
         #Cadastrar carros
-        txtMarca.send_keys(carro[0])
-        txtModelo.send_keys(carro[1])
-        txtAno.send_keys(carro[2])
-        if carro[3] == "Automático":
+        txtMarca.send_keys(carro[1])
+        txtModelo.send_keys(carro[0])
+        txtAno.send_keys(carro[3])
+        if carro[4] == "Automático":
             isAutomatico.click()
-        if carro[4]=="Hatch":
+        if carro[2]=="Hatch":
             isHatch.click()
-        elif carro[4] == "Sedã":
+        elif carro[2] == "Sedã":
             isSedan.click()
         if carro[5] == "Branco":
             select.select_by_value("branco")
@@ -111,7 +113,7 @@ def _post(carros):
         elif carro[5] == "Verde":    
             select.select_by_value("verde")
         elif carro[5] == "Azul":    
-            select.select_by_value("azul")
+            select.select_by_value("outro")
         elif carro[5] == "Rosa":
             select.select_by_value("rosa")
         else:    
@@ -123,30 +125,30 @@ def _post(carros):
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36'
 }
-url = "https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios/estado-es?rs=55&re=69"
+
+url = "https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios/estado-es?ctp=9&ctp=8&pe=300000&ps=100000&re=74&rs=66"
+# url = "https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios/estado-es?ctp=9&ctp=8&pe=100000&ps=70000&re=74&rs=66"
 links = _scrapper_first_page(url, headers)
 carros = _scrapper(links, headers)
 
-#link = https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios/estado-es?rs=55&re=69
-#hora da busca: 9:15
-# carros = [['FIAT STRADA TREKKING 1.6 16V FLEX CE', 'FIAT', 'Pick-up', '2013', 'Manual', 'Vermelho', '44.990', 'Vila Velha'], 
-#           ['RENAULT LOGAN EXPRES. EASYR HI-FLEX 1.6 8V', 'RENAULT', 'Sedã', '2016', 'Manual', 'Branco', '37.500', 'Vitória'], 
-#           ['MERCEDES-BENZ C-180 CGI EXC. 1.6/1.6 FLEX TB 16V  AUT.', 'MERCEDES-BENZ', 'Sedã', '2016', 'Automático', 'Preto', '118.000', 'Vitória'], 
-#           ['CHEVROLET S10 PICK-UP LS 2.8 TDI 4X2 CD DIES. MEC.', 'CHEVROLET', 'Pick-up', '2013', 'Manual', 'Preto', '92.000', 'Piúma'], 
-#           ['CHEVROLET CLASSIC LIFE/LS 1.0 VHC FLEXP. 4P', 'CHEVROLET', 'Sedã', '2015', 'Manual', 'Preto', '32.900', 'Vila Velha'],
-#           ['CHEVROLET CLASSIC LIFE/LS 1.0 VHC FLEXP. 4P', 'CHEVROLET', 'Sedã', '2014', 'Manual', 'Azul', '28.500', 'Vila Velha'], 
-#           ['MITSUBISHI PAJERO SPORT 2.8 4X4 DIESEL AUT.', 'MITSUBISHI', 'SUV', '2006', 'Automático', 'Prata', '47.900', 'Serra']]
+#link = https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios/estado-es?ctp=9&ctp=8&pe=100000&ps=70000&re=74&rs=66
+#hora da busca: 9:45
+# carros = [['CHEVROLET CRUZE SPORT LTZ 1.4 16V TB FLEX 5P AUT.', 'CHEVROLET', 'Hatch', '2019', 'Automático', 'Branco', '98.000', 'Linhares'], 
+#           ['CHEVROLET HATCH PREM. 1.0 12V TB FLEX 5P AUT', 'CHEVROLET', 'Hatch', '2021', 'Automático', 'Branco', '79.000', 'Vila Velha'], 
+#           ['HYUNDAI HB20 PLATINUM 1.0 TB FLEX 12V AUT', 'HYUNDAI', 'Hatch', '2023', 'Automático', 'Azul', '94.000', 'Vitória'], 
+#           ['FIAT ARGO TREKKING 1.3 8V FLEX', 'FIAT', 'Hatch', '2022', 'Manual', 'Preto', '78.000', 'Vila Velha'], 
+#           ['VOLKSWAGEN VOYAGE 1.0 FLEX 12V 4P', 'VOLKSWAGEN', 'Sedã', '2023', 'Manual', 'Prata', '77.990', 'Vila Velha'], 
+#           ['HYUNDAI HB20S EVOLUTION 1.0 FLEX 12V MEC', 'HYUNDAI', 'Sedã', '2021', 'Manual', 'Preto', '74.990', 'Guarapari'], 
+#           ['HYUNDAI ELANTRA 2.0 16V FLEX AUT.', 'HYUNDAI', 'Sedã', '2017', 'Automático', 'Branco', '79.900', 'Vila Velha']]
 
-# carros =  [['VOLKSWAGEN', 'VOLKSWAGEN VOYAGE 1.6 MSI FLEX 16V 4P AUT', '2019', 'Manual', 'Sedã','Prata', '49999', 'Vila Velha'], 
-# ['FORD', 'FORD KA+ SEDAN 1.0 TIVCT FLEX 4P', '2019', 'Manual', 'Sedã','Prata', '55000', 'Vila Velha'], 
-# ['VOLKSWAGEN', 'VOLKSWAGEN VOYAGE TRENDLINE 1.6 T.FLEX 8V 4P', '2018','Manual', 'Sedã', 'Branco', '53900', 'Vitória'], 
-# ['CHEVROLET', 'CHEVROLET PRISMA SED. LT 1.4 8V FLEXPOWER 4P AUT.', '2019', 'Automático', 'Sedã', 'Preto', '49990', 'Serra'], 
-# ['FORD', 'FORD KA 1.5 SEDAN SE 12V FLEX 4P MEC.', '2020', 'Manual', 'Sedã', 'Cinza', '56900', 'Vila Velha'], 
-# ['HYUNDAI', 'HYUNDAI HB20 COMFORT PLUS 1.0 TB FLEX 12V MEC.', '2017', 'Manual', 'Sedã', 'Branco', '55000', 'Colatina'], 
-# ['RENAULT','RENAULT LOGAN ZEN FLEX 1.0 12V 4P MEC.', '2020', 'Manual', 'Sedã', 'Branco', '51990', 'Vitória'],
-# ['VOLKSWAGEN', 'VOLKSWAGEN VOYAGE 1.6 MSI FLEX 8V 4P', '2020', 'Manual', 'Sedã', 'Branco', '59500', 'Vila Velha'], 
-# ['FIAT', 'FIAT CRONOS DRIVE 1.8 16V FLEX AUT', '2020', 'Automático', 'Sedã', 'Cinza', '60000','Serra'], 
-# ['CHEVROLET', 'CHEVROLET ONIX SED. PLUS PREM. 1.0 12V TB FLEX AUT', '2020', 'Automático','Sedã', '4 portas', '600', 'Cariacica'],
-#  ['FORD', 'FORD KA+ SEDAN 1.0 SEL TICVT FLEX 4P', '2018', 'Manual', 'Sedã', 'Preto', '50000', 'Jaguaré']]
+# link = https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios/estado-es?ctp=9&ctp=8&pe=300000&ps=100000&re=74&rs=66
+#hora da busca: 9:48
+# carros =  [['MERCEDES-BENZ C-180 CGI EXC. 1.6/1.6 FLEX TB 16V  AUT.', 'MERCEDES-BENZ', 'Sedã', '2016', 'Automático', 'Preto', '118.000', 'Vitória'], 
+#            ['TOYOTA 2.0 XEI 16V FLEX 4P AUTOMATICO', 'TOYOTA', 'Sedã', '2019', 'Automático', 'Cinza', '105.990', 'Vila Velha'], 
+#            ['AUDI A3 SEDAN PRESTIGE PLUS 1.4 TFSI S-TRONIC', 'AUDI', 'Sedã', '2019', 'Automático', 'Branco', '100.000', 'Vila Velha'], 
+#            ['BMW 120IA SPORT 2.0 ACTIVEFLEX 16V AUT.', 'BMW', 'Hatch', '2016', 'Automático', 'Cinza', '108.500', 'Vila Velha'], 
+#            ['TOYOTA COROLLA ALTIS HYBRID 1.8 16V FLEX AUT.', 'TOYOTA', 'Sedã', '2022', 'Automático', 'Cinza', '157.990', 'Serra'], 
+#            ['HONDA CIVIC SEDAN EX 2.0 FLEX 16V AUT.4P', 'HONDA', 'Sedã', '2017', 'Automático', 'Branco', '104.990', 'Vila Velha'], 
+#            ['TOYOTA COROLLA XEI 2.0 FLEX 16V AUT.', 'TOYOTA', 'Sedã', '2019', 'Automático', 'Branco', '110.000', 'Guarapari']]
 
 _post(carros)
